@@ -1,0 +1,63 @@
+﻿@model IEnumerable<TrainingVM>
+@{
+    ViewData["Title"] = "My Trainings";
+}
+
+<div class="container mt-4">
+    <a class="btn btn-primary mb-3" asp-controller="Trainings" asp-action="Create">Create Training <i class="fas fa-plus-circle"></i></a>
+        <div class="row">
+        @if(Model.Count() == 0)
+        {
+            <div class="alert alert-info">
+                You have not added trainings yet, <a asp-controller="Trainings" asp-action="Create">add now</a>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-light">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Candidates</th>
+                            <th>Created At</th>
+                            <th>Type</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var s in @Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a class="text-decoration-none" asp-controller="Trainings" asp-action="Details" asp-route-id="@s.Id">
+                                        @s.Title
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="text-decoration-none" asp-controller="Trainings" asp-action="GetApplicationsForTraining" asp-route-trid="@s.Id">
+                                        Applications
+                                    </a>
+                                </td>
+                                <td>@s.CreatedAt.ToString("d")</td>
+                                <td>@s.TrainingType.TypeName</td>
+                                <td>
+                                    <a asp-controller="Trainings" asp-action="Edit" asp-route-id="@s.Id" class="btn btn-secondary mb-1 me-2">Edit</a>
+                                    <button class="btn btn-danger" onclick="deleteTraining(@s.Id)">
+                                        Delete
+                                        <div class="spinner-border spinner-border-sm d-none" role="status" id="@s.Id">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        </div>
+</div>
+@section Scripts{ 
+    <script src="~/js/trainingForCompany.js"></script>
+}

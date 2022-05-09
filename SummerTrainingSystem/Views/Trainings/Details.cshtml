@@ -1,0 +1,68 @@
+﻿@using SummerTrainingSystemCore.Enums
+@inject SummerTrainingSystemCore.Interfaces.IUnitOfWork unitOfWork
+@model TrainingVM
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<link href="~/css/trainings.css" rel="stylesheet" />
+<div class="container mt-4">
+    <div class="col-lg-8 mb-4 bg-white p-3">
+        <div class="mb-2">
+            <h2>@Model.Title</h2>
+            <span class="tr-type-badge mb-3">@Model.TrainingType.TypeName</span>
+
+            <div class="pb-1 mt-2">
+                <a asp-controller="Account" asp-action="CompanyProfile" asp-route-id="@Model.CompanyId">
+                    @Model.Company.Name
+                </a> 
+                @(Model.Company.City), @(Model.Company.Country)
+            </div>
+            <span class="text-secondary">
+                @(
+                    (DateTime.Now - Model.CreatedAt).Days == 0 ? "Today" : $"Posted {(DateTime.Now - Model.CreatedAt).Days} ago"
+                )
+            </span>
+            <div class="d-flex justify-content-start text-secondary mt-3">
+                <div class="d-flex justify-content-center align-items-center me-3 fw-bolder fs-5">
+                    @Model.ApplicantsCount
+                </div>
+                <div>
+                    <span class="d-block">
+                        Applicants for
+                    </span>
+                    <span class="d-block">
+                        @Model.OpenPositions Open Position
+                    </span>
+                </div>
+            </div>
+            <hr />
+            @if(User.IsInRole(Roles.Student.ToString()))
+            {
+                @if(unitOfWork.TrainningRepository().CheckIfStudentApplied(User.Identity.Name, Model.Id))
+                {
+                    <span class="btn btn-secondary btn-lg">Applied</span>
+                }
+                else
+                {
+                    <a class="btn btn-primary btn-lg" asp-controller="Trainings" asp-action="ApplyForTraining" asp-route-trid="@Model.Id">
+                        Apply
+                    </a>
+                }
+            }
+        </div>
+    </div>
+</div>
+<div class="container mt-4">
+    <div class="col-lg-8 mb-4 bg-white p-3">
+        <div class="mb-2">
+            <h4>Training Description</h4>
+            <p class="text-secondary" style="word-break:break-word;">
+                @Model.Description
+            </p>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/js/trainingForCompany.js"></script>
+}

@@ -1,0 +1,159 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto:wght@300;400;500;700;900&display=swap');
+
+:root {
+    --light-font: 300;
+    --regular-font: 400;
+    --medium-font: 500;
+    --bold-font: 700;
+    --extra-bold-font: 900;
+}
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+    color: #0366d6;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin:0;
+    padding: 0;
+    min-height: 100vh;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif !important;
+    background-color: #f5f6f7 !important;
+}
+
+.list-group-item {
+    cursor: pointer;
+}
+
+.custom-spinner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+    background-color: #656aae36;
+}
+
+/************************************************************************/
+@media(max-width: 992px)
+{
+    .navbar
+    {
+        padding: 3rem 0 !important;
+    }
+    .navbar-collapse 
+    {
+        padding-top: 15px;
+    }
+
+    .login-ul 
+    {
+        margin-top: 30px;
+    }
+
+    .login-ul .nav-item 
+    {
+        margin: 10px 0 !important;
+    }
+}
+.nav-link {
+    transition: all 0.3s ease-in-out;
+    border-radius: 10px;
+}
+.nav-link:hover 
+{
+    transform: translateY(-2px);
+}
+/************************************************************************/
+.tr-type-badge {
+    color: #f8f9fa;
+    background-color: #198754;
+    font-style:italic;
+    font-size:10px;
+    font-weight:500;
+    padding:2px;
+}
+/*************************************************************************/
+.alert
+{
+    border-left: 5px solid;
+}
+
+.btn {
+    border-radius: 10px;
+    min-width:100px;
+}
+
+.nav-item
+{
+    margin: 0 5px;
+}
+.profile-picture {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.customActiveLink {
+    color: #3b88c3 !important;
+}
+

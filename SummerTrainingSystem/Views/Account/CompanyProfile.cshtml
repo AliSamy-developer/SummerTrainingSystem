@@ -1,0 +1,180 @@
+﻿@using SummerTrainingSystemCore.Enums
+@model CompanyVM
+@{
+    ViewData["title"] = "Company";
+}
+
+<link href="~/css/CompanyProfile.css" rel="stylesheet" />
+
+<div class="container">
+    <div class="hetadiv">
+        <div class="bluediv"></div>
+        <div class="d-flex align-items-center shadow">
+            <div class="me-3 text-center">
+                <div class="profile-pic my-2">
+                    @if(User.Identity.IsAuthenticated && User.IsInRole("Company"))
+                    {
+                        <label class="-label" for="ProfilePictureFile">
+                            <i class="fas fa-camera"></i>
+                            <span>Change Image</span>
+                        </label>
+                        <input id="ProfilePictureFile" type="file" onchange="loadFile(event)" />
+                        <img src="~/uploads/@(Model.ProfilePictureUrl ?? "avatar.svg")" 
+                        id="ProfilePicture" 
+                        width="200" 
+                        alt="profile"
+                        asp-append-version="true"/>
+                    }
+                    else
+                    {
+                        <img src="~/uploads/@(Model.ProfilePictureUrl ?? "avatar.svg")" 
+                        id="ProfilePicture" 
+                        width="200" 
+                        alt="profile"
+                        style="position:unset !important;"
+                        asp-append-version="true"/>
+                    }
+                </div>
+                <div class="spinner-border text-secondary spinner-border-sm d-none" role="status" id="profilePicSpinner">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <div class="photodiv">
+                <div class="headdiv">
+                    <h1 class="head">@Model.Name</h1>
+                </div>
+                <div class="descdiv">
+                    <span>
+                        <a class="manu">@Model.Industry</a>
+                    </span>
+                    |
+                    <span class="location-info">@Model.City , @Model.Country</span>
+                    |
+                    <span class="company-size">@Model.CompanySize.SizeRange</span>
+                </div>
+                <div class="linksdiv">
+                    <div class="comlink">
+                        <i class="fas fa-globe me-1 text-primary"></i>
+                        <a href="@Model.CompanyWebsite" class="weblink">@Model.CompanyWebsite</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="prof mt-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="profhead">Company Profile</h2>
+            @if (User.IsInRole(Roles.Company.ToString()) && Model.Email == User.Identity.Name)
+            {
+                <a class="btn btn-secondary" asp-controller="Account" asp-action="EditCompany">
+                    <i class="fas fa-pen"></i> Edit Profile
+                </a>
+            }
+        </div>
+        <div class="profspans">
+            <span class="locspan">
+                <span class="location">Location: </span>
+                <span class="makan">@Model.City , @Model.Country</span>
+            </span>
+            <span class="foundedspan">
+                <span class="founded">Phone: </span>
+                <span class="year">@Model.PhoneNumber</span>
+            </span>
+            <span class="foundedspan">
+                <span class="founded">Founded: </span>
+                <span class="year">@Model.FoundedAt.ToString("d")</span>
+            </span>
+            <span class="industryspan">
+                <span class="industry">Industry: </span>
+                <span class="manufac">@Model.Industry</span>
+            </span>
+            <span class="foundedspan">
+                <span class="founded">Spacialists: </span>
+                <span class="year">@Model.Specialities</span>
+            </span>
+            <span class="sizespan">
+                <span class="comsize">Company Size: </span>
+                <span class="num">@Model.CompanySize.SizeRange</span>
+            </span>
+        </div>
+        <h4 class="text-secondary mt-3">About</h4>
+        <p class="about mt-0">
+            @Model.AboutCompany
+        </p>
+    </div>
+    @if (User.IsInRole(Roles.Student.ToString()))
+    {
+        <div class="box border shadow bg-light">
+            <h2 class="display-6 text-secondary">Add a review</h2>
+            <form id="form" name="checkit" onsubmit="handleSubmit(event)">
+                <input id="CompanyId" name="CompanyId" type="hidden" asp-for="@Model.Id" />
+                <textarea lang="en" id="Message" placeholder="leave a review here.." name="Message" class="Message" onkeyup="checkform()"></textarea>
+                <button type="submit" id="SubmitComment" disabled="disabled">
+                    Save
+                    <div id="spinner" class="spinner-border spinner-border-sm d-none" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </button>
+            </form>
+        </div>
+    }
+    @if (Model.Comments.Count() == 0)
+    {
+        <div id="Parent">
+            <div class="alert alert-info mt-3 mb-5" id="NoComments">
+                No reviews to show
+            </div>
+        </div>
+    }
+    <div class="CommentsView mb-5">
+        <h2 class="display-6 text-secondary">Reviews</h2>
+        @foreach (var comment in Model.Comments)
+        {
+            <div class="commentdiv border p-3 mt-3">
+                <div class="photocommentdiv">
+                    <img src="~/uploads/@(comment.Student.ProfilePictureUrl ?? "avatar.svg")" alt="profile" asp-append-version="true">
+                </div>
+                <div class="commenttextdiv">
+                    <div class="commenttext">
+                        <div class="txt">
+                            <h5 tabindex="-1">
+                                <a role="button">@comment.Student.FirstName @comment.Student.LastName</a>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="commentperson">
+                        <span class="time">
+                            @(
+                                (DateTime.Now - comment.CreateAt).Days == 0 ? "Today" : $"{(DateTime.Now - comment.CreateAt).Days} days ago"
+                            )
+                        </span>
+                        <br />
+                        <a>@comment.Message</a>
+                    </div>
+                </div>
+            </div>
+        }
+        <div id="comments-added"></div>
+    </div>
+    
+    
+
+</div>
+@section Scripts{
+    <script src="~/js/CompanyProfile.js"></script>
+    <script>
+        // to restrict user to type english
+        $("#Message").keypress(function(event){
+            var ew = event.which;
+            if(ew == 32 || ew == 44 || ew == 39 || ew == 46)
+                return true;
+            if(48 <= ew && ew <= 57)
+                return true;
+            if(65 <= ew && ew <= 90)
+                return true;
+            if(97 <= ew && ew <= 122)
+                return true;
+            return false;
+        });
+    </script>
+}

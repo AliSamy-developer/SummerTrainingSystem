@@ -1,0 +1,67 @@
+﻿@model EditSupervisorProfileVM
+@inject SummerTrainingSystemCore.Interfaces.IUnitOfWork unitOfWork
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
+
+            <h1 class="display-5">Edit Profile</h1>
+            <hr />
+            <form method="post">
+                <input asp-for="Id" type="hidden" />
+                <input asp-for="DepartmentId" type="hidden" />
+                <div class="row">
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="FirstName" placeholder="First Name" />
+                        <span class="text-danger" asp-validation-for="FirstName"></span>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="LastName" placeholder="Last Name" />
+                        <span class="text-danger" asp-validation-for="LastName"></span>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="Email" placeholder="Email" />
+                        <span class="text-danger" asp-validation-for="Email"></span>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="PhoneNumber" placeholder="Phone Number" />
+                        <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" readonly asp-for="UniversityID" placeholder="University ID"/>
+                        <span class="text-danger" asp-validation-for="UniversityID"></span>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <select disabled asp-for="DepartmentId" class="form-select"
+                                asp-items="@(
+                                    unitOfWork.GenericRepository<Department>().ListAllAsync().Result
+                                    .Select(l => new SelectListItem() {Text = l.Abbreviation, Value = l.Id.ToString() })
+                                )">
+                            <option value="">Select Department</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="DepartmentId"></span>
+                    </div>
+                </div>
+
+                <div class="mt-4 mb-2 d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success">Save</button>
+                    <a class="btn btn-dark" asp-controller="Home" asp-action="Index">Back</a>
+                </div>
+                <a asp-controller="Account" asp-action="ResetPassword">Reset Password</a>
+            </form>
+            <div class="mt-4 bg-danger p-2 text-white" asp-validation-summary="ModelOnly"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

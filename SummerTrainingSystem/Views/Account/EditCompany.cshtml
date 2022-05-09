@@ -1,0 +1,103 @@
+﻿@model EditHrCompanyVM
+@inject SummerTrainingSystemCore.Interfaces.IUnitOfWork unitOfWork
+@{
+    ViewData["Title"] = "Edit Company";
+}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-10">
+            <h1 class="display-5">Edit Profile</h1>
+            <hr />
+            <form method="post">
+                <input asp-for="Id" type="hidden" />
+                <div class="row">
+                    <div class="form-floating col-md-6 mt-4 ps-0">
+                        <input class="form-control" asp-for="Name" placeholder="Company Name" />
+                        <label asp-for="Name">Company Name</label>
+                        <span class="text-danger" asp-validation-for="Name"></span>
+                    </div>
+                    <div class="form-floating col-md-6 mt-4 ps-0">
+                        <input class="form-control" asp-for="PhoneNumber" placeholder="Phone Number" />
+                        <label asp-for="PhoneNumber">Phone Number</label>
+                        <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-floating col-md-6 mt-4 ps-0">
+                        <input class="form-control" asp-for="Country" placeholder="Country" />
+                        <label asp-for="Country">Country</label>
+                        <span class="text-danger" asp-validation-for="Country"></span>
+                    </div>
+                    <div class="form-floating col-md-6 mt-4 ps-0">
+                        <input class="form-control" asp-for="City" placeholder="City" />
+                        <label asp-for="City">City</label>
+                        <span class="text-danger" asp-validation-for="City"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-floating col-md-6 mt-4 ps-0">
+                        <input class="form-control" asp-for="Industry" placeholder="Industry (Computer Software, Finance ...)" />
+                        <label asp-for="Industry">Industry(Computer Software, Finance ...)</label>
+                        <span class="text-danger" asp-validation-for="Industry"></span>
+                    </div>
+                    <div class="form-floating col-md-6 mt-4 ps-0">
+                        <input class="form-control" asp-for="Specialities" placeholder="Specialities (IT Services, Consulting Services ...)" />
+                        <label asp-for="Specialities">Specialities(IT Services, Consulting Services ...)</label>
+                        <span class="text-danger" asp-validation-for="Specialities"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-floating col-md-6 mt-4 ps-0">
+                        <input class="form-control" asp-for="CompanyWebsite" placeholder="Company Website (optional)" />
+                        <label asp-for="CompanyWebsite">Company Website</label>
+                        <span class="text-danger" asp-validation-for="CompanyWebsite"></span>
+                    </div>
+                    <div class="form-floating col-md-6 mt-4 ps-0">
+                        <input class="form-control" asp-for="FoundedAt" placeholder="Founded At" />
+                        <label asp-for="FoundedAt">Founded At</label>
+                        <span class="text-danger" asp-validation-for="FoundedAt"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-floating col-md-6 mt-4 ps-0">
+                        <input class="form-control" asp-for="Email" placeholder="Email" />
+                        <label asp-for="Email">Email Address</label>
+                        <span class="text-danger" asp-validation-for="Email"></span>
+                    </div>
+                    <div class="form-floating col-md-6 mt-4 ps-0">
+                        <select asp-for="CompanySizeId" class="form-select"
+                                asp-items="@(
+                                        unitOfWork.GenericRepository<CompanySize>().ListAllAsync().Result
+                                        .Select(l => new SelectListItem() {Text = l.SizeName + " - " + l.SizeRange, Value = l.Id.ToString() })
+                                    )">
+                            <option value="">Company Size</option>
+                        </select>
+                        <label asp-for="CompanySizeId">Company Size</label>
+                        <span class="text-danger" asp-validation-for="CompanySizeId"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-floating col mt-4 ps-0">
+                        <textarea class="form-control" asp-for="AboutCompany" placeholder="About Company"></textarea>
+                        <label asp-for="AboutCompany">About Company</label>
+                        <span class="text-danger" asp-validation-for="AboutCompany"></span>
+                    </div>
+                </div>
+
+                <div class="mt-4 mb-2 d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success">Save</button>
+                    <a class="btn btn-dark" asp-controller="Home" asp-action="Index">Back</a>
+                </div>
+                <a asp-controller="Account" asp-action="ResetPassword">Reset Password</a>
+            </form>
+            <div class="mt-4 bg-danger p-2 text-white" asp-validation-summary="ModelOnly"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

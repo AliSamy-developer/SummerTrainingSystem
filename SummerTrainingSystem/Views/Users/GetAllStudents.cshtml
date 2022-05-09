@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Students";
+}
+
+<link href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+
+
+<div class="container mt-5">
+    <div class="d-flex flex-wrap justify-content-between align-items-center">
+        <h1 class="display-5">Students</h1>
+        <a class="btn btn-primary" asp-controller="Account" asp-action="CreateStudentAccount">Create Student <i class="fas fa-plus-circle"></i></a>
+    </div>
+    <hr />
+    <div class="table-responsive">
+        <table class="table w-100 table-borderless table-striped" id="studentsTable" data-page-length="10">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>First Name</th>
+                    <th>Email</th>
+                    <th>Level</th>
+                    <th>University Id</th>
+                    <th>Department</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="~/js/studentsDatatables.js"></script>
+}
